@@ -44,6 +44,7 @@ class ColetaDados:
                     sleep(0.03)
             except serial.SerialException:
                 print("Erro de leitura ...")
+                disp.reset_input_buffer()
                 break
 
 

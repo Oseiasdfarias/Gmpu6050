@@ -1,7 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-import matplotlib
 import time
 
 # import tkinter as Tk
@@ -10,9 +8,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # Modulos criados
 from gmpu6050 import ColetaDados
+from gmpu6050 import Graphs
 
-matplotlib.style.use("ggplot")
-matplotlib.use('TkAgg')
 # Themes: blue (default), dark-blue, green
 ctk.set_default_color_theme("green")
 
@@ -20,54 +17,9 @@ ctk.set_default_color_theme("green")
 coleta_dados = ColetaDados()
 time.sleep(1)
 
-
-fig, ((ax1, ax2, ax3),
-      (ax4, ax5, ax6)) = plt.subplots(2, 3,
-                                      figsize=(11, 6))
-
-# fig.suptitle('Gráficos Sensor MPU6050', fontsize=19)
-fig.subplots_adjust(wspace=0.32, hspace=0.44, left=0.076,
-                    top=0.894, right=0.971, bottom=0.098)
-
-ax1 = fig.add_subplot(231)
-ax1.set_title("Aceleração eixo X($m/s^2$)", fontsize=11)
-ax1.set_xlabel("Tempo")
-ax1.set_ylabel("Amplitude")
-ln1, = ax1.plot([], [], lw=1.5, color="sienna")
-
-ax2 = fig.add_subplot(232)
-ax2.set_title("Aceleração eixo Y($m/s^2$)", fontsize=11)
-ax2.set_xlabel("Tempo")
-ax2.set_ylabel("Amplitude")
-ln2, = ax2.plot([], [], lw=1.5, color="green")
-
-ax3 = fig.add_subplot(233)
-ax3.set_title("Aceleração eixo Z($m/s^2$)", fontsize=11)
-ax3.set_xlabel("Tempo")
-ax3.set_ylabel("Amplitude")
-ln3, = ax3.plot([], [], lw=1.5, color="red")
-
-ax4 = fig.add_subplot(234)
-ax4.set_title("Rotação em X [Roll] ($rad/s$)", fontsize=11)
-ax4.set_xlabel("Tempo")
-ax4.set_ylabel("Amplitude")
-ln4, = ax4.plot([], [], lw=1.5, color="blue")
-
-ax5 = fig.add_subplot(235)
-ax5.set_title("Rotação em Y [Pitch] ($rad/s$)", fontsize=11)
-ax5.set_xlabel("Tempo")
-ax5.set_ylabel("Amplitude")
-ln5, = ax5.plot([], [], lw=1.5, color="purple")
-
-ax6 = fig.add_subplot(236)
-ax6.set_title("Rotação em Z [Yaw] ($rad/s$)", fontsize=11)
-ax6.set_xlabel("Tempo")
-ax6.set_ylabel("Amplitude")
-ln6, = ax6.plot([], [], lw=1.5, color="black")
-
-# Axis que para plotar os gráficos
-ln = [ln1, ln2, ln3, ln4, ln5, ln6]
-ax = [ax1, ax2, ax3, ax4, ax5, ax6]
+# Graficos
+graphs = Graphs()
+fig, ax, ln = graphs.get_fig_axes_ln()
 
 fila = coleta_dados.get_dados()
 
@@ -88,7 +40,7 @@ def init():
         ax[i].axhline(0, color="dimgray", lw=1.2)
         ax[i].axvline(0.5, color="dimgray", lw=1.2)
 
-    return ln1, ln2, ln3, ln4, ln5, ln6
+    return ln
 
 
 def update(frame):
@@ -102,7 +54,7 @@ def update(frame):
             tx[i].set_text(f"{dados[i][-1]:.2f}\nrad/s")"""
         ax.set_xdata(t)
         ax.set_ydata(dados[i])
-    return ln1, ln2, ln3, ln4, ln5, ln6
+    return ln
 
 
 # GUI
