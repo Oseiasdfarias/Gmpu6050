@@ -9,7 +9,7 @@ import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 # Modulos criados
-from coleta_dados import ColetaDados
+from gmpu6050 import ColetaDados
 
 matplotlib.style.use("ggplot")
 matplotlib.use('TkAgg')

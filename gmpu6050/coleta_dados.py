@@ -15,17 +15,17 @@ class ColetaDados:
         self.porta = porta
         self.baud_rate = baud_rate
         self.fila = np.array([[], [], [], [], [], []]).astype(object)
-        self.init_thread()
+        self.__init_thread()
 
     def get_dados(self):
         return self.fila
 
-    def init_thread(self):
-        new_thread = Thread(target=self.coleta_dados)
+    def __init_thread(self):
+        new_thread = Thread(target=self.__coleta_dados)
         new_thread.daemon = True
         new_thread.start()
 
-    def coleta_dados(self):
+    def __coleta_dados(self):
         disp = serial.Serial(self.porta, self.baud_rate)
         disp.reset_input_buffer()
         while disp.is_open:
