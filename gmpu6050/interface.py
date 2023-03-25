@@ -60,7 +60,7 @@ class GraphMpu6959:
     def quit(self):
         self.root.quit()
         self.root.destroy()
-    
+
     def get_usb_port(self):
         port = self.textbox.get("0.0", "end")
         self.usb_port = port.strip(" ").replace("\n", "")

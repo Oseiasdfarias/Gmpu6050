@@ -2,4 +2,16 @@
 
 GMpu6050 é uma aplicação Pyhton para plotagem dos dados do sensor mpu6050.
 
-# EM CONSTRUÇÃO ...
+
+#### Modo Escuro
+![Demo](utils/demo_dark.png)
+
+<br>
+<br>
+
+#### Modo Claro
+![Demo](utils/demo.png)
+
+
+
+
