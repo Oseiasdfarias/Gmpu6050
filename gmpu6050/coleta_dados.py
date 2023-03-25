@@ -21,16 +21,16 @@ class ColetaDados:
         return self.fila
 
     def __init_thread(self):
-        new_thread = Thread(target=self.__coleta_dados)
-        new_thread.daemon = True
-        new_thread.start()
+        self.new_thread = Thread(target=self.__coleta_dados)
+        self.new_thread.daemon = True
+        self.new_thread.start()
 
     def __coleta_dados(self):
-        disp = serial.Serial(self.porta, self.baud_rate)
-        disp.reset_input_buffer()
-        while disp.is_open:
+        self.disp = serial.Serial(self.porta, self.baud_rate)
+        self.disp.reset_input_buffer()
+        while self.disp.is_open:
             try:
-                dado = disp.readline()
+                dado = self.disp.readline()
                 dados1 = str(dado.decode('utf8')).rstrip("\n")
                 dados1 = dados1.split(",")
                 try:
@@ -44,7 +44,7 @@ class ColetaDados:
                     sleep(0.03)
             except serial.SerialException:
                 print("Erro de leitura ...")
-                disp.reset_input_buffer()
+                self.disp.reset_input_buffer()
                 break
 
 
