@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib.animation import FuncAnimation
 
-# import tkinter as Tk
+# import tkinter as tk
 import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
@@ -18,14 +18,12 @@ class GraphMpu6959:
         # Objeto para coletar dados do sensor
         self.usb_port = "/dev/ttyUSB0"
         self.baud_rate = 115200
-        self.coleta_dados = ColetaDados(porta=self.usb_port,
-                                        baud_rate=self.baud_rate)
 
         # Graficos
         self.executar = True
         graphs = Graphs()
         self.fig, self.ax, self.ln = graphs.get_fig_axes_ln()
-        self.fila = self.coleta_dados.get_dados()
+        # self.fila = self.coleta_dados.get_dados()
 
         # tx = []
 
@@ -73,6 +71,8 @@ class GraphMpu6959:
 
     def run_graph(self):
         if self.executar:
+            self.coleta_dados = ColetaDados(porta=self.usb_port,
+                                            baud_rate=self.baud_rate)
             self.ani = FuncAnimation(self.fig, self.update,
                                      init_func=self.init,
                                      cache_frame_data=False,
@@ -84,19 +84,23 @@ class GraphMpu6959:
         self.root = ctk.CTk()
         self.root.title("Gráficos MPU6050")
         # root.iconbitmap("mpu6050.ico")
-        self.root.geometry("1270x660+20+45")
+        self.root.geometry("1270x660+30+45")
+        self.root.minsize(1270, 660)
+        self.root.maxsize(1270, 660)
         self.label = ctk.CTkLabel(
             self.root, text="Gráficos Sensor MPU6050",
             font=ctk.CTkFont(size=20,
                              weight="bold")).grid(column=1, row=0)
-
+        self.espaco = ctk.CTkLabel(master=self.root, text=" ",
+                                   width=110)
+        self.espaco.grid(row=0, column=0, padx=20, pady=10)
         self.label_nemu = ctk.CTkLabel(master=self.root, text="Menu",
                                        width=110,
                                        # image="./test_images/CustomTkinter_logo_single.png",
-                                       font=ctk.CTkFont(size=15,
+                                       font=ctk.CTkFont(size=25,
                                                         weight="bold"))
         self.label_nemu.grid(row=0, column=0, padx=20, pady=10)
-        # label_nemu.place(rely=0.1)
+        self.label_nemu.place(rely=0.08)
 
         canvas = FigureCanvasTkAgg(self.fig, master=self.root)
         canvas.get_tk_widget().grid(column=1, row=1)
@@ -110,32 +114,23 @@ class GraphMpu6959:
                         sticky="s")
         button_run.place(rely=0.2)
 
-        button = ctk.CTkButton(master=self.root, height=30,
-                               font=ctk.CTkFont(size=15, weight="bold"),
-                               text="Quit", border_width=1,
-                               command=self.quit)
-        button.grid(row=3, column=0,
-                    padx=40, pady=10,
-                    sticky="s")
-        button.place(rely=0.3)
-
         button_usb = ctk.CTkButton(master=self.root, height=30,
                                    font=ctk.CTkFont(size=15, weight="bold"),
                                    text="Get USB", border_width=1,
                                    command=self.get_usb_port)
-        button_usb.grid(row=4, column=0,
+        button_usb.grid(row=3, column=0,
                         padx=40, pady=10,
                         sticky="s")
-        button_usb.place(rely=0.4)
+        button_usb.place(rely=0.3)
 
         self.textbox = ctk.CTkTextbox(master=self.root, height=27, width=140,
                                       font=ctk.CTkFont(size=15,
                                                        weight="bold"),
                                       corner_radius=10,
                                       border_width=1)
-        self.textbox.grid(row=5, padx=40, pady=10, column=0, sticky="s")
-        self.textbox.insert("0.0", "ttyUSB0")
-        self.textbox.place(rely=0.46)
+        self.textbox.grid(row=4, padx=40, pady=10, column=0, sticky="s")
+        self.textbox.insert("0.0", "/dev/ttyUSB0")
+        self.textbox.place(rely=0.36)
         self.textbox.focus_set()
 
         self.aparencia_menu = ctk.CTkOptionMenu(master=self.root,
@@ -145,8 +140,17 @@ class GraphMpu6959:
                                                 values=["Light", "Dark"],
                                                 command=self.aparencia_event)
 
-        self.aparencia_menu.grid(row=6, column=0, padx=20, pady=5, sticky="s")
-        self.aparencia_menu.place(rely=0.55)
+        self.aparencia_menu.grid(row=5, column=0, padx=20, pady=5, sticky="s")
+        self.aparencia_menu.place(rely=0.45)
+
+        button = ctk.CTkButton(master=self.root, height=30,
+                               font=ctk.CTkFont(size=15, weight="bold"),
+                               text="Quit", border_width=1,
+                               text_color="red", command=self.quit)
+        button.grid(row=6, column=0,
+                    padx=20, pady=10,
+                    sticky="s")
+        button.place(rely=0.90)
 
         self.root.mainloop()
 
